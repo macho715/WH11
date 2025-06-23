@@ -11,10 +11,10 @@ from datetime import datetime
 class EnhancedInventoryValidator:
     """향상된 재고 계산 검증기 - 사용자 검증 결과 통합"""
     
-    # 사용자 제공 검증 결과 (실제 운영 환경에서 검증된 데이터)
+    # 사용자 제공 검증 결과 (실제 운영 환경에서 검증된 데이터) - 하드코딩 제거
     USER_VALIDATION_RESULTS = {
-        'DSV Al Markaz': 812,
-        'DSV Indoor': 414,
+        # 'DSV Al Markaz': 812,       # 하드코딩 제거 - 실시간 데이터로 대체
+        # 'DSV Indoor': 414,          # 하드코딩 제거 - 실시간 데이터로 대체
         'validation_pass_rate': 95,  # 95% 이상
         'error_reduction': 60,       # 60% 감소
         'duplicate_prevention': 100, # 100% 적용

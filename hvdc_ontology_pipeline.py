@@ -298,18 +298,31 @@ class EnhancedDataLoader:
     
     def _extract_warehouse_from_column_name(self, col_name: str) -> str:
         """컬럼명에서 실제 창고명 추출 (날짜 필드 제외)"""
+        import re
+        
         col_lower = str(col_name).lower()
-        
-        # 🚫 날짜 관련 컬럼들은 창고가 아님
-        date_keywords = ['etd', 'eta', 'atd', 'ata', 'date', 'time', 'departure', 'arrival']
-        if any(keyword in col_lower for keyword in date_keywords):
+
+        # ① 날짜 키워드 정의
+        date_keywords = {'etd', 'eta', 'atd', 'ata', 'date', 'time',
+                         'departure', 'arrival'}
+
+        # ② '토큰 전부가' 날짜 키워드일 때만 날짜 컬럼으로 본다
+        tokens = re.split(r'[^a-zA-Z0-9]+', col_lower)      # 공백·언더바·/ 등 분리
+        if set(t for t in tokens if t) <= date_keywords:  # 날짜 토큰만 존재?
             return 'UNKNOWN'
-        
-        # 🏢 실제 창고명 패턴 매칭
+
+        # ③ 나머지 토큰에서 날짜 키워드 제거 → 창고명 후보 생성
+        warehouse_part = ' '.join(t for t in tokens if t and t not in date_keywords)
+
+        # ④ 기존 패턴 매칭 로직 재사용
+        col_lower = warehouse_part.lower()
         warehouse_patterns = {
             'DSV Indoor': ['indoor', 'm44', 'hauler indoor'],
             'DSV Outdoor': ['outdoor', 'out '],
-            'DSV Al Markaz': ['markaz', 'al markaz', 'm1'],
+            'DSV Al Markaz': [
+                'markaz', 'almarkaz', 'm1',  # ← almarkaz 붙어있는 것도 허용
+                'al markaz', 'markaz1'
+            ],
             'MOSB': ['mosb', 'barge'],
             'DSV MZP': ['mzp'],
             'DHL WH': ['dhl'],

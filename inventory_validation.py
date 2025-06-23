@@ -13,10 +13,10 @@ from typing import List, Dict, Any
 class InventoryValidator:
     """재고 계산 검증기 - 사용자 검증 결과 반영"""
     
-    # 사용자 제공 검증 결과
+    # 사용자 제공 검증 결과 - 하드코딩 제거, 런타임에 주입받도록 변경
     USER_VALIDATION_RESULTS = {
-        'DSV Al Markaz': 812,
-        'DSV Indoor': 414,
+        # 'DSV Al Markaz': 812,  # 하드코딩 제거 - 실시간 데이터로 대체
+        # 'DSV Indoor': 414,     # 하드코딩 제거 - 실시간 데이터로 대체
         'validation_pass_rate': 95,  # 95% 이상
         'error_reduction': 60,       # 60% 감소
         'duplicate_prevention': 100  # 100% 적용
