@@ -1,0 +1,219 @@
+{
+  "namespace": "http://samsung.com/project-logistics#",
+  "class_mappings": {
+    "BL": "BillOfLading",
+    "Cargo": "CargoItem",
+    "Port": "Port",
+    "HSCode": "HSCode",
+    "FreightContract": "FreightContract",
+    "Warehouse": "Warehouse",
+    "CustomsEntry": "CustomsEntry",
+    "eDASDeclaration": "eDASDeclaration",
+    "TransportEvent": "TransportEvent",
+    "Case": "Case",
+    "StockSnapshot": "StockSnapshot",
+    "DeadStock": "DeadStock",
+    "Site": "Site"
+  },
+  "property_mappings": {
+    "BL_NUMBER": {
+      "subject_class": "BillOfLading",
+      "predicate": "blNumber",
+      "type": "xsd:string"
+    },
+    "ORIGIN_PORT": {
+      "subject_class": "BillOfLading",
+      "predicate": "originPort",
+      "object_class": "Port"
+    },
+    "DEST_PORT": {
+      "subject_class": "BillOfLading",
+      "predicate": "destinationPort",
+      "object_class": "Port"
+    },
+    "SHIP_DATE": {
+      "subject_class": "BillOfLading",
+      "predicate": "shipmentDate",
+      "type": "xsd:date"
+    },
+    "TOTAL_TEU": {
+      "subject_class": "BillOfLading",
+      "predicate": "totalTEU",
+      "type": "xsd:decimal"
+    },
+    "OOG_FLAG": {
+      "subject_class": "CargoItem",
+      "predicate": "isOOG",
+      "type": "xsd:boolean",
+      "transform": {
+        "Y": true,
+        "N": false
+      }
+    },
+    "HS_CODE": {
+      "subject_class": "CargoItem",
+      "predicate": "hasHSCode",
+      "object_class": "HSCode"
+    },
+    "WAREHOUSE_CODE": {
+      "subject_class": "CargoItem",
+      "predicate": "storedIn",
+      "object_class": "Warehouse"
+    },
+    "FREIGHT_VENDOR": {
+      "subject_class": "FreightContract",
+      "predicate": "contractor",
+      "type": "xsd:string"
+    },
+    "FREIGHT_RATE": {
+      "subject_class": "FreightContract",
+      "predicate": "freightRate",
+      "type": "xsd:decimal"
+    },
+    "INCOTERM": {
+      "subject_class": "FreightContract",
+      "predicate": "hasIncoterm",
+      "type": "xsd:string"
+    },
+    "Case_No": {
+      "subject_class": "TransportEvent",
+      "predicate": "belongsToCase",
+      "object_class": "Case"
+    },
+    "Tx_ID": {
+      "subject_class": "TransportEvent",
+      "predicate": "eventId",
+      "type": "xsd:string"
+    },
+    "TxType": {
+      "subject_class": "TransportEvent",
+      "predicate": "eventType",
+      "type": "xsd:string"
+    },
+    "TxType_Refined": {
+      "subject_class": "TransportEvent",
+      "predicate": "eventType",
+      "type": "xsd:string"
+    },
+    "Date": {
+      "subject_class": "TransportEvent",
+      "predicate": "eventDateTime",
+      "type": "xsd:dateTime"
+    },
+    "Loc_From": {
+      "subject_class": "TransportEvent",
+      "predicate": "sourceLocation",
+      "object_class": "Warehouse"
+    },
+    "Loc_To": {
+      "subject_class": "TransportEvent",
+      "predicate": "targetLocation",
+      "object_class": "Warehouse"
+    },
+    "Site": {
+      "subject_class": "TransportEvent",
+      "predicate": "toSite",
+      "object_class": "Site"
+    },
+    "EVENT_TYPE": {
+      "subject_class": "TransportEvent",
+      "predicate": "eventType",
+      "type": "xsd:string"
+    },
+    "EVENT_DATETIME": {
+      "subject_class": "TransportEvent",
+      "predicate": "eventDateTime",
+      "type": "xsd:dateTime"
+    },
+    "BOE_NO": {
+      "subject_class": "CustomsEntry",
+      "predicate": "boeNumber",
+      "type": "xsd:string"
+    },
+    "EDAS_NO": {
+      "subject_class": "eDASDeclaration",
+      "predicate": "edasNumber",
+      "type": "xsd:string"
+    },
+    "EDAS_DATE": {
+      "subject_class": "eDASDeclaration",
+      "predicate": "declaredDate",
+      "type": "xsd:date"
+    },
+    "Inbound_Qty": {
+      "subject_class": "StockSnapshot",
+      "predicate": "inboundQty",
+      "type": "xsd:decimal"
+    },
+    "Outbound_Qty": {
+      "subject_class": "StockSnapshot",
+      "predicate": "outboundQty",
+      "type": "xsd:decimal"
+    },
+    "Inbound": {
+      "subject_class": "StockSnapshot",
+      "predicate": "inboundQty",
+      "type": "xsd:decimal"
+    },
+    "Transfer_Out": {
+      "subject_class": "StockSnapshot",
+      "predicate": "transferOutQty",
+      "type": "xsd:decimal"
+    },
+    "Final_Out": {
+      "subject_class": "StockSnapshot",
+      "predicate": "finalOutQty",
+      "type": "xsd:decimal"
+    },
+    "Opening_Stock": {
+      "subject_class": "StockSnapshot",
+      "predicate": "openingStock",
+      "type": "xsd:decimal"
+    },
+    "Closing_Stock": {
+      "subject_class": "StockSnapshot",
+      "predicate": "closingStock",
+      "type": "xsd:decimal"
+    },
+    "Date_Snapshot": {
+      "subject_class": "StockSnapshot",
+      "predicate": "snapshotDate",
+      "type": "xsd:date"
+    },
+    "Monthly_Inbound": {
+      "subject_class": "StockSnapshot",
+      "predicate": "monthlyInboundQty",
+      "type": "xsd:decimal"
+    },
+    "Monthly_Outbound": {
+      "subject_class": "StockSnapshot",
+      "predicate": "monthlyOutboundQty",
+      "type": "xsd:decimal"
+    },
+    "Inbound_Count": {
+      "subject_class": "StockSnapshot",
+      "predicate": "inboundCount",
+      "type": "xsd:int"
+    },
+    "Outbound_Count": {
+      "subject_class": "StockSnapshot",
+      "predicate": "outboundCount",
+      "type": "xsd:int"
+    },
+    "Cumulative_Stock": {
+      "subject_class": "StockSnapshot",
+      "predicate": "cumulativeStock",
+      "type": "xsd:decimal"
+    },
+    "Delivered_Count": {
+      "subject_class": "StockSnapshot",
+      "predicate": "deliveredCount",
+      "type": "xsd:int"
+    },
+    "Days_Since_Last_Move": {
+      "subject_class": "DeadStock",
+      "predicate": "inactiveDays",
+      "type": "xsd:int"
+    }
+  }
+}
