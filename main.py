@@ -11,39 +11,52 @@ from hvdc_korean_excel_report import create_korean_excel_report
 from hvdc_cost_enhanced_analysis import CostAnalysisEngine
 from hvdc_integrated_invoice_analysis import IntegratedAnalyzer
 
-def main():
-    print("\n[1] 온톨로지/정규화 및 데이터 로드")
+def get_latest_inventory_summary(expected_values=None, tolerance=2):
+    """
+    최신 데이터 기준 DSV Al Markaz, DSV Indoor의 최신 재고 집계 및 기대값과의 비교 자동 리포트
+    """
+    if expected_values is None:
+        expected_values = {"DSV Al Markaz": 812, "DSV Indoor": 414}
     mapper = OntologyMapper("mapping_rules_v2.4.json")
     loader = EnhancedDataLoader(mapper)
     raw_events = loader.load_and_process_files("data")
-    
-    print("\n[2] 트랜잭션 생성 및 월별 집계/검증")
     tx_engine = EnhancedTransactionEngine(mapper)
     transaction_log = tx_engine.create_transaction_log(raw_events)
     analysis_engine = EnhancedAnalysisEngine(mapper)
     daily_stock = analysis_engine.calculate_daily_stock(transaction_log)
-    monthly_summary = analysis_engine.create_monthly_summary(transaction_log, daily_stock)
-    validation_result = analysis_engine.validate_stock_integrity(daily_stock)
-    
-    print("\n[3] 고급 재고 검증(추가로 필요시)")
-    validator = EnhancedInventoryValidator()
-    # 예시: validator.validate_user_inventory_logic(...), validator.run_comprehensive_validation(...)
-    # (원하면 주석 해제 후 활용)
-    
-    print("\n[4] 한국어 리포트 생성")
-    create_korean_excel_report()
-    
-    print("\n[5] (선택) 인보이스/비용/통합 분석 리포트")
-    # 비용 분석 등은 실무에서 필요할 때만 호출
-    # 예시:
-    # cost_engine = CostAnalysisEngine(mapper)
-    # cost_engine.load_invoice_cost_data('data/HVDC WAREHOUSE_INVOICE.xlsx')
-    # 통합분석
-    analyzer = IntegratedAnalyzer()
-    analyzer.load_all_data()
-    analyzer.perform_integrated_analysis()
-    
-    print("\n🎉 전체 메인 실행 완료!")
+    print("\n🔎 **창고별 재고 검증 결과**")
+    result = {}
+    if "Location" in daily_stock.columns and "Closing_Stock" in daily_stock.columns and "Date" in daily_stock.columns:
+        latest = daily_stock.sort_values("Date").groupby("Location").tail(1)
+        for wh, expected in expected_values.items():
+            row = latest[latest["Location"] == wh]
+            if not row.empty:
+                actual = int(round(row["Closing_Stock"].values[0]))
+                diff = actual - expected
+                ratio = 0
+                if expected:
+                    ratio = diff / expected * 100
+                # 근사/불일치 메시지
+                if abs(diff) <= tolerance:
+                    msg = "✅"
+                    explain = f"{actual}박스 (근사치, 기대 {expected})"
+                else:
+                    msg = "❌"
+                    explain = f"실제 재고: {actual}박스 | 기대값: {expected}박스 | 차이: {diff:+}박스 ({ratio:+.1f}% {'초과' if diff>0 else '부족'})"
+                print(f"{msg} **{wh}**: {explain}")
+                result[wh] = {"actual": actual, "expected": expected, "diff": diff, "diff_ratio": ratio}
+            else:
+                print(f"❌ **{wh}**: 데이터 없음")
+                result[wh] = None
+    else:
+        print("❌ 재고 집계 DataFrame 구조 오류")
+    return result
+
+def main():
+    # 1. 데이터 적재 및 검증/집계 자동 실행
+    get_latest_inventory_summary()
+    # 2. 추가 리포트/자동화 등...
+    # create_korean_excel_report(), 통합 분석 등 필요시 추가
 
 if __name__ == "__main__":
     main() 
