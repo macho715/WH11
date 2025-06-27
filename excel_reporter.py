@@ -426,9 +426,22 @@ def generate_excel_comprehensive_report(transaction_df, daily_stock=None, output
         transaction_df_cp[final_cols].to_excel(writer, sheet_name='FULL_매핑집계', index=False)
         print(f"✅ FULL_매핑집계 시트 저장 ({len(transaction_df_cp)}건)")
 
-        # === [실제수입합계_검증 시트 추가] ===
-        real_table = calc_real_imported_stock(transaction_df)
-        real_table.to_excel(writer, sheet_name='실제수입합계_검증', index=False)
+        # === [실제수입합계_검증 시트 추가 - Pkg 기준] ===
+        try:
+            df_he = pd.read_excel('data/HVDC WAREHOUSE_HITACHI(HE).xlsx')
+            df_sim = pd.read_excel('data/HVDC WAREHOUSE_SIMENSE(SIM).xlsx')
+            hitachi_pkg = get_total_pkg(df_he)
+            simense_pkg = get_total_pkg(df_sim)
+            total_pkg = hitachi_pkg + simense_pkg
+            pkg_summary = pd.DataFrame([{
+                '구분': '실제수입(Pkg합계)',
+                'HITACHI': hitachi_pkg,
+                'SIMENSE': simense_pkg,
+                '전체합계': total_pkg
+            }])
+            pkg_summary.to_excel(writer, sheet_name='실제수입합계_검증', index=False)
+        except Exception as e:
+            print(f"[경고] 실제수입합계_검증 시트 생성 실패: {e}")
 
         # 🆕 NEW: 월별정산집계 시트 추가 (가이드 적용)
         monthly_summary_df = generate_monthly_summary_report(transaction_df)
