@@ -1,41 +1,21 @@
-"""
-HVDC 데이터 로딩 및 전처리 모듈
-온톨로지 기반 정규화 및 데이터 통합 처리
-"""
-
 import pandas as pd
-import os
-from typing import List, Dict, Any, Optional
 import json
-from datetime import datetime
+from pathlib import Path
 import logging
+import os
+import glob
+from mapping_utils import mapping_manager
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class DataLoader:
-    """HVDC 데이터 로딩 및 전처리 클래스"""
-    
-    def __init__(self, mapping_rules_path: str = "mapping_rules_v2.4.json"):
-        """
-        Args:
-            mapping_rules_path: 온톨로지 매핑 규칙 파일 경로
-        """
-        self.mapping_rules_path = mapping_rules_path
-        self.mapping_rules = self._load_mapping_rules()
-        self.raw_data = {}
-        self.processed_data = {}
-        
-    def _load_mapping_rules(self) -> Dict[str, Any]:
-        """매핑 규칙 로드"""
-        try:
-            with open(self.mapping_rules_path, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception as e:
-            logger.error(f"매핑 규칙 로드 실패: {e}")
-            return {}
-    
-    def load_excel_files(self, data_dir: str = "data") -> Dict[str, pd.DataFrame]:
+    def __init__(self):
+        # ✅ 통합 매핑 매니저 사용
+        self.mapping_manager = mapping_manager
+        logger.info("✅ DataLoader 초기화 완료 - 통합 매핑 시스템 적용")
+
+    def load_excel_files(self, data_dir: str = "data"):
         """Excel 파일들을 로드"""
         excel_files = {}
         
@@ -43,235 +23,244 @@ class DataLoader:
             logger.error(f"데이터 디렉토리 없음: {data_dir}")
             return excel_files
             
-        for filename in os.listdir(data_dir):
-            if filename.endswith('.xlsx'):
-                file_path = os.path.join(data_dir, filename)
+        # HVDC 창고 파일 패턴
+        file_patterns = [
+            "HVDC WAREHOUSE_HITACHI*.xlsx",
+            "HVDC WAREHOUSE_SIMENSE*.xlsx"
+        ]
+        
+        for pattern in file_patterns:
+            for filepath in glob.glob(os.path.join(data_dir, pattern)):
+                filename = os.path.basename(filepath)
+                
+                # 인보이스 파일 스킵
+                if 'invoice' in filename.lower():
+                    continue
+                    
                 try:
-                    # Excel 파일의 모든 시트 로드
-                    excel_file = pd.read_excel(file_path, sheet_name=None, engine='openpyxl')
-                    excel_files[filename] = excel_file
-                    logger.info(f"로드 완료: {filename} ({len(excel_file)} 시트)")
+                    print(f"📄 파일 처리 중: {filename}")
+                    
+                    # Excel 파일 로드
+                    xl_file = pd.ExcelFile(filepath)
+                    
+                    # Case List 시트 우선 선택
+                    sheet_name = xl_file.sheet_names[0]
+                    for sheet in xl_file.sheet_names:
+                        if 'case' in sheet.lower() and 'list' in sheet.lower():
+                            sheet_name = sheet
+                            break
+                    
+                    df = pd.read_excel(filepath, sheet_name=sheet_name)
+                    
+                    if not df.empty:
+                        excel_files[filename] = df
+                        
+                        # 간단한 통계 출력
+                        print(f"   📊 {len(df)}행 데이터 로드")
+                        
+                        case_col = self._find_case_column(df)
+                        if case_col:
+                            case_count = df[case_col].nunique()
+                            print(f"   📦 고유 케이스 {case_count}개")
+                    
                 except Exception as e:
                     logger.error(f"Excel 파일 로드 실패 {filename}: {e}")
                     
         return excel_files
     
-    def normalize_location_names(self, df: pd.DataFrame) -> pd.DataFrame:
-        """위치명 정규화 (온톨로지 기반)"""
-        if 'location_mappings' not in self.mapping_rules:
-            return df
-            
-        location_mappings = self.mapping_rules['location_mappings']
+    def _find_case_column(self, df):
+        """케이스 컬럼 찾기"""
+        case_patterns = ['case', 'carton', 'box', 'mr#', 'mr #', 'sct ship no', 'case no']
         
-        # 위치 관련 컬럼들 정규화
-        location_columns = ['Warehouse', 'Site', 'Location', 'From', 'To']
-        
-        for col in location_columns:
-            if col in df.columns:
-                df[col] = df[col].apply(lambda x: self._normalize_single_location(x, location_mappings))
-                
-        return df
-    
-    def _normalize_single_location(self, location: str, mappings: Dict) -> str:
-        """단일 위치명 정규화"""
-        if pd.isna(location):
-            return location
-            
-        location_str = str(location).strip()
-        
-        # 직접 매핑 확인
-        for standard_name, variants in mappings.items():
-            if location_str in variants or location_str == standard_name:
-                return standard_name
-                
-        # 부분 매칭 시도
-        for standard_name, variants in mappings.items():
-            for variant in variants:
-                if variant.lower() in location_str.lower() or location_str.lower() in variant.lower():
-                    return standard_name
-                    
-        return location_str
-    
-    def extract_transactions(self, excel_files: Dict) -> List[Dict]:
-        """Excel 파일들에서 트랜잭션 데이터 추출"""
+        for col in df.columns:
+            col_lower = str(col).lower().strip()
+            if any(pattern in col_lower for pattern in case_patterns):
+                return col
+        return None
+
+    def classify_storage_type(self, location):
+        """
+        창고/현장 Location명을 Storage Type으로 분류 (통합 매핑 사용)
+        """
+        return self.mapping_manager.classify_storage_type(location)
+
+    def add_storage_type(self, df):
+        """
+        DataFrame의 Location 컬럼 기준으로 Storage_Type 컬럼을 추가 (통합 매핑 사용)
+        """
+        return self.mapping_manager.add_storage_type_to_dataframe(df, "Location")
+
+    def extract_transactions(self, excel_files):
+        """
+        여러 Excel 파일에서 트랜잭션 데이터 추출 후 Storage_Type 추가
+        """
         all_transactions = []
-        
-        for filename, sheets in excel_files.items():
-            for sheet_name, df in sheets.items():
-                try:
-                    # 시트별 트랜잭션 추출
-                    transactions = self._extract_sheet_transactions(df, filename, sheet_name)
-                    all_transactions.extend(transactions)
-                    logger.info(f"트랜잭션 추출: {filename}/{sheet_name} - {len(transactions)}건")
-                except Exception as e:
-                    logger.error(f"트랜잭션 추출 실패 {filename}/{sheet_name}: {e}")
+        for filename, df in excel_files.items():
+            try:
+                # ✅ Location 컬럼이 있으면 통합 매핑으로 Storage_Type 태깅
+                if 'Location' in df.columns:
+                    df = self.add_storage_type(df)
+                    print(f"   🏷️ Storage_Type 컬럼 추가됨 (통합 매핑)")
                     
+                    # 검증 로그
+                    validation = self.mapping_manager.validate_mapping(df)
+                    print(f"   매핑 검증: {validation}")
+                    
+                transactions = self._extract_file_transactions(df, filename)
+                all_transactions.extend(transactions)
+                print(f"   ✅ {len(transactions)}건 이벤트 추출")
+            except Exception as e:
+                logger.error(f"트랜잭션 추출 실패 {filename}: {e}")
         return all_transactions
     
-    def _extract_sheet_transactions(self, df: pd.DataFrame, filename: str, sheet_name: str) -> List[Dict]:
-        """단일 시트에서 트랜잭션 추출"""
+    def _extract_file_transactions(self, df, filename):
+        """
+        개별 파일 내 각 행을 트랜잭션으로 변환, Storage_Type도 포함
+        가이드 A안: 'Pkg' 컬럼을 수량으로, 'SERIAL NO.' 또는 'HVDC CODE'를 케이스로, 
+        각 창고명 컬럼의 날짜값이 있으면 이벤트(입출고)로 분할 추출
+        """
         transactions = []
         
         if df.empty:
             return transactions
             
-        # 컬럼명 정규화
-        df = self._normalize_column_names(df)
-        
-        # 위치명 정규화
-        df = self.normalize_location_names(df)
-        
-        # 날짜 컬럼 식별 및 처리
-        date_columns = self._identify_date_columns(df)
-        
-        for idx, row in df.iterrows():
-            try:
-                transaction = self._create_transaction_record(row, filename, sheet_name, date_columns)
-                if transaction:
-                    transactions.append(transaction)
-            except Exception as e:
-                logger.warning(f"트랜잭션 생성 실패 {filename}/{sheet_name} row {idx}: {e}")
-                
-        return transactions
-    
-    def _normalize_column_names(self, df: pd.DataFrame) -> pd.DataFrame:
-        """컬럼명 정규화"""
-        column_mappings = {
-            'incoming': ['Incoming', 'In', 'Inbound', '입고', '입고량'],
-            'outgoing': ['Outgoing', 'Out', 'Outbound', '출고', '출고량'],
-            'inventory': ['Inventory', 'Stock', '재고', '재고량'],
-            'date': ['Date', 'Timestamp', '날짜', '일자'],
-            'warehouse': ['Warehouse', 'WH', '창고'],
-            'site': ['Site', 'Location', '사이트', '위치']
-        }
-        
-        new_columns = {}
-        for standard_name, variants in column_mappings.items():
-            for col in df.columns:
-                if any(variant.lower() in str(col).lower() for variant in variants):
-                    new_columns[col] = standard_name
-                    break
-                    
-        if new_columns:
-            df = df.rename(columns=new_columns)
-            
-        return df
-    
-    def _identify_date_columns(self, df: pd.DataFrame) -> List[str]:
-        """날짜 컬럼 식별"""
+        # 가이드 A안: 창고별 날짜 컬럼 찾기 (SIMENSE 파일 구조에 맞춤)
         date_columns = []
+        warehouse_locations = self.mapping_manager.get_warehouse_locations() + self.mapping_manager.get_site_locations()
+        
+        print(f"🔍 {filename} 파일 분석 중...")
+        print(f"   📋 전체 컬럼 수: {len(df.columns)}개")
         
         for col in df.columns:
-            if 'date' in str(col).lower() or 'time' in str(col).lower():
+            col_str = str(col).strip()
+            # 창고명이 포함된 컬럼을 날짜 컬럼으로 인식
+            if any(warehouse.lower() in col_str.lower() for warehouse in warehouse_locations):
                 date_columns.append(col)
-            elif df[col].dtype == 'datetime64[ns]':
-                date_columns.append(col)
-                
-        return date_columns
-    
-    def _create_transaction_record(self, row: pd.Series, filename: str, sheet_name: str, date_columns: List[str]) -> Optional[Dict]:
-        """트랜잭션 레코드 생성"""
-        transaction = {
-            'source_file': filename,
-            'source_sheet': sheet_name,
-            'timestamp': datetime.now(),
-            'data': {}
-        }
+                print(f"   📅 날짜 컬럼 발견: {col}")
         
-        # 기본 필드 추출
-        essential_fields = ['incoming', 'outgoing', 'inventory', 'warehouse', 'site']
-        has_essential_data = False
+        print(f"   📊 발견된 날짜 컬럼: {len(date_columns)}개")
         
-        for field in essential_fields:
-            if field in row.index and pd.notna(row[field]):
-                transaction['data'][field] = row[field]
-                if field in ['incoming', 'outgoing', 'inventory'] and row[field] != 0:
-                    has_essential_data = True
-                    
-        # 날짜 정보 추출
-        for date_col in date_columns:
-            if date_col in row.index and pd.notna(row[date_col]):
-                transaction['data']['date'] = row[date_col]
+        # 가이드 A안: 케이스 컬럼 찾기 (SERIAL NO. 또는 HVDC CODE 우선)
+        case_col = None
+        case_patterns = ['serial no', 'hvdc code', 'case', 'carton', 'box', 'mr#', 'mr #', 'sct ship no', 'case no']
+        
+        for pattern in case_patterns:
+            for col in df.columns:
+                col_lower = str(col).lower().strip()
+                if pattern in col_lower:
+                    case_col = col
+                    print(f"   📦 케이스 컬럼 발견: {col} (패턴: {pattern})")
+                    break
+            if case_col:
                 break
                 
-        # 추가 메타데이터
-        for col in row.index:
-            if col not in transaction['data'] and pd.notna(row[col]):
-                transaction['data'][col] = row[col]
+        if not case_col:
+            logger.warning(f"케이스 컬럼을 찾을 수 없음: {filename}")
+            print(f"   ⚠️ 케이스 컬럼 없음 - 사용 가능한 컬럼: {[col for col in df.columns if any(word in str(col).lower() for word in ['serial', 'hvdc', 'case', 'pkg'])]}")
+            return transactions
+        
+        # 가이드 A안: 수량 컬럼 찾기 (Pkg 우선)
+        qty_col = None
+        qty_patterns = ['pkg', 'qty', 'quantity', 'pieces', 'piece', 'q\'ty']
+        
+        for pattern in qty_patterns:
+            for col in df.columns:
+                col_lower = str(col).lower().strip()
+                if pattern in col_lower:
+                    qty_col = col
+                    print(f"   📦 수량 컬럼 발견: {col} (패턴: {pattern})")
+                    break
+            if qty_col:
+                break
                 
-        return transaction if has_essential_data else None
+        if not qty_col:
+            qty_col = 'Pkg'  # 기본값
+            print(f"   📦 수량 컬럼 기본값 사용: {qty_col}")
+        
+        print(f"   🔄 트랜잭션 추출 시작...")
+        
+        for idx, row in df.iterrows():
+            # 가이드 A안: 케이스 ID 추출
+            case_id = str(row[case_col]) if pd.notna(row[case_col]) else f"CASE_{idx}"
+            
+            # 가이드 A안: 수량 추출 (Pkg 컬럼 활용)
+            try:
+                quantity = int(row[qty_col]) if pd.notna(row[qty_col]) else 1
+            except (ValueError, TypeError):
+                quantity = 1
+                print(f"   ⚠️ 행 {idx}: 수량 변환 실패, 기본값 1 사용")
+            
+            # 가이드 A안: 각 창고별 날짜 컬럼에서 이벤트 추출
+            events_found = 0
+            for date_col in date_columns:
+                if pd.notna(row[date_col]):
+                    try:
+                        event_date = pd.to_datetime(row[date_col])
+                        warehouse = self._extract_warehouse_from_column(date_col)
+                        
+                        # 통합 매핑으로 storage_type 분류
+                        storage_type = self.classify_storage_type(warehouse)
+                        
+                        if warehouse != 'UNKNOWN':
+                            # 트랜잭션 데이터 생성 (가이드 A안 방식)
+                            tx = {
+                                'source_file': filename,
+                                'timestamp': pd.Timestamp.now(),
+                                'data': {
+                                    'case': case_id,
+                                    'date': event_date,
+                                    'warehouse': warehouse,
+                                    'incoming': quantity,
+                                    'outgoing': 0,
+                                    'inventory': quantity,
+                                    'storage_type': storage_type,
+                                    'pkg': quantity,  # 가이드 A안: Pkg 정보 추가
+                                    'serial_no': case_id if 'serial' in str(case_col).lower() else None,
+                                    'hvdc_code': case_id if 'hvdc' in str(case_col).lower() else None
+                                }
+                            }
+                            transactions.append(tx)
+                            events_found += 1
+                            
+                    except Exception as e:
+                        logger.debug(f"날짜 파싱 실패 {date_col}: {e}")
+                        continue
+            
+            if events_found == 0:
+                print(f"   ⚠️ 행 {idx}: 이벤트 없음 (케이스: {case_id}, 수량: {quantity})")
+        
+        print(f"   ✅ {filename}: {len(transactions)}건 트랜잭션 추출 완료")
+        return transactions
     
-    def load_and_process_files(self, data_dir: str = "data") -> List[Dict]:
-        """전체 데이터 로딩 및 처리 파이프라인"""
-        logger.info("🚀 HVDC 데이터 로딩 및 전처리 시작")
+    def _find_quantity_column(self, df):
+        """수량 컬럼 찾기"""
+        qty_patterns = ['pkg', 'qty', 'quantity', 'pieces', 'piece', 'q\'ty']
         
-        # 1. Excel 파일들 로드
-        excel_files = self.load_excel_files(data_dir)
-        logger.info(f"Excel 파일 로드 완료: {len(excel_files)}개")
+        for col in df.columns:
+            col_lower = str(col).lower().strip()
+            if any(pattern in col_lower for pattern in qty_patterns):
+                return col
+        return None
+
+    def _extract_warehouse_from_column(self, col_name):
+        """컬럼명에서 창고명 추출"""
+        col_lower = str(col_name).lower().strip()
         
-        # 2. 트랜잭션 추출
-        transactions = self.extract_transactions(excel_files)
-        logger.info(f"트랜잭션 추출 완료: {len(transactions)}건")
-        
-        # 3. 데이터 품질 검증
-        validated_transactions = self._validate_transactions(transactions)
-        logger.info(f"데이터 검증 완료: {len(validated_transactions)}건")
-        
-        self.raw_data = excel_files
-        self.processed_data = validated_transactions
-        
-        return validated_transactions
-    
-    def _validate_transactions(self, transactions: List[Dict]) -> List[Dict]:
-        """트랜잭션 데이터 검증"""
-        validated = []
-        
-        for transaction in transactions:
-            if self._is_valid_transaction(transaction):
-                validated.append(transaction)
-            else:
-                logger.warning(f"유효하지 않은 트랜잭션: {transaction}")
-                
-        return validated
-    
-    def _is_valid_transaction(self, transaction: Dict) -> bool:
-        """트랜잭션 유효성 검사"""
-        data = transaction.get('data', {})
-        
-        # 필수 필드 확인
-        required_fields = ['warehouse']
-        for field in required_fields:
-            if field not in data or pd.isna(data[field]):
-                return False
-                
-        # 수량 데이터 확인
-        quantity_fields = ['incoming', 'outgoing', 'inventory']
-        has_quantity = any(field in data and pd.notna(data[field]) and data[field] != 0 
-                          for field in quantity_fields)
-        
-        return has_quantity
-    
-    def get_summary_statistics(self) -> Dict[str, Any]:
-        """데이터 로딩 요약 통계"""
-        return {
-            'total_files': len(self.raw_data),
-            'total_transactions': len(self.processed_data),
-            'warehouses': list(set(t['data'].get('warehouse') for t in self.processed_data if 'warehouse' in t['data'])),
-            'date_range': self._get_date_range(),
-            'file_summary': {filename: len(sheets) for filename, sheets in self.raw_data.items()}
+        warehouse_mapping = {
+            'dsv indoor': 'DSV Indoor',
+            'dsv al markaz': 'DSV Al Markaz',
+            'dsv outdoor': 'DSV Outdoor',
+            'hauler indoor': 'Hauler Indoor',
+            'dsv mzp': 'DSV MZP',
+            'mosb': 'MOSB',
+            'mir': 'MIR',
+            'shu': 'SHU',
+            'das': 'DAS',
+            'agi': 'AGI'
         }
-    
-    def _get_date_range(self) -> Dict[str, Any]:
-        """날짜 범위 계산"""
-        dates = []
-        for transaction in self.processed_data:
-            if 'date' in transaction['data']:
-                dates.append(transaction['data']['date'])
-                
-        if dates:
-            return {
-                'start_date': min(dates),
-                'end_date': max(dates),
-                'total_days': (max(dates) - min(dates)).days
-            }
-        return {} 
+        
+        for pattern, warehouse in warehouse_mapping.items():
+            if pattern in col_lower:
+                return warehouse
+        
+        return 'UNKNOWN' 

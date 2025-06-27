@@ -1,0 +1,35 @@
+# HVDC Warehouse Management System - 경로 설정
+# 데이터 및 출력 파일 경로 정의
+
+[data]
+# 입력 데이터 디렉토리
+input_directory = "data"
+# Excel 파일 패턴
+warehouse_patterns = [
+    "HVDC WAREHOUSE_HITACHI*.xlsx",
+    "HVDC WAREHOUSE_SIMENSE*.xlsx"
+]
+# 제외할 파일 패턴
+exclude_patterns = ["*invoice*", "*~$*"]
+
+[output]
+# 출력 디렉토리
+reports_directory = "reports"
+rdf_directory = "rdf_output"
+# 파일명 패턴
+report_filename = "HVDC_통합리포트_{timestamp}.xlsx"
+test_filename = "HVDC_테스트리포트_{timestamp}.xlsx"
+
+[config]
+# 설정 파일 경로
+mapping_rules = "mapping_rules_v2.4.json"
+expected_stock = "expected_stock.yml"
+settings = "config/settings.toml"
+paths = "config/paths.toml"
+thresholds = "config/thresholds.yml"
+
+[temp]
+# 임시 파일 디렉토리
+temp_directory = "temp"
+# 임시 파일 보관 기간 (일)
+retention_days = 7 

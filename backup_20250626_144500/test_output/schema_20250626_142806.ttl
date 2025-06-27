@@ -1,0 +1,160 @@
+@prefix ex: <http://samsung.com/project-logistics#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:Case a rdfs:Class ;
+    rdfs:label "Case" .
+
+ex:Charge a rdfs:Class ;
+    rdfs:label "Charge" .
+
+ex:Container a rdfs:Class ;
+    rdfs:label "Container" .
+
+ex:DangerousCargoWarehouse a rdfs:Class ;
+    rdfs:label "DangerousCargoWarehouse" .
+
+ex:Dataset a rdfs:Class ;
+    rdfs:label "Dataset" .
+
+ex:IndoorWarehouse a rdfs:Class ;
+    rdfs:label "IndoorWarehouse" .
+
+ex:Item a rdfs:Class ;
+    rdfs:label "Item" .
+
+ex:OutdoorWarehouse a rdfs:Class ;
+    rdfs:label "OutdoorWarehouse" .
+
+ex:Site a rdfs:Class ;
+    rdfs:label "Site" .
+
+ex:StockSnapshot a rdfs:Class ;
+    rdfs:label "StockSnapshot" .
+
+ex:TransportEvent a rdfs:Class ;
+    rdfs:label "TransportEvent" .
+
+ex:Vendor a rdfs:Class ;
+    rdfs:label "Vendor" .
+
+ex:Warehouse a rdfs:Class ;
+    rdfs:label "Warehouse" .
+
+ex:has20FRContainer a rdf:Property ;
+    rdfs:label "20FR" ;
+    rdfs:range xsd:integer .
+
+ex:has20FTContainer a rdf:Property ;
+    rdfs:label "20FT" ;
+    rdfs:range xsd:integer .
+
+ex:has40FRContainer a rdf:Property ;
+    rdfs:label "40FR" ;
+    rdfs:range xsd:integer .
+
+ex:has40FTContainer a rdf:Property ;
+    rdfs:label "40FT" ;
+    rdfs:range xsd:integer .
+
+ex:hasAmount a rdf:Property ;
+    rdfs:label "Amount" ;
+    rdfs:range xsd:decimal .
+
+ex:hasCBM a rdf:Property ;
+    rdfs:label "CBM" ;
+    rdfs:range xsd:decimal .
+
+ex:hasCase a rdf:Property ;
+    rdfs:label "Case_No" ;
+    rdfs:range xsd:string .
+
+ex:hasCategory a rdf:Property ;
+    rdfs:label "Category" ;
+    rdfs:range xsd:string .
+
+ex:hasContainerStuffing a rdf:Property ;
+    rdfs:label "CNTR Stuffing Q'TY" ;
+    rdfs:range xsd:integer .
+
+ex:hasContainerUnstuffing a rdf:Property ;
+    rdfs:label "CNTR Unstuffing Q'TY" ;
+    rdfs:range xsd:integer .
+
+ex:hasCrane a rdf:Property ;
+    rdfs:label "crane" ;
+    rdfs:range xsd:decimal .
+
+ex:hasCustomField a rdf:Property ;
+    rdfs:label "Custom Field" ;
+    rdfs:range xsd:string .
+
+ex:hasDate a rdf:Property ;
+    rdfs:label "Date" ;
+    rdfs:range xsd:dateTime .
+
+ex:hasFinishDate a rdf:Property ;
+    rdfs:label "Finish" ;
+    rdfs:range xsd:date .
+
+ex:hasForklift a rdf:Property ;
+    rdfs:label "folk lift" ;
+    rdfs:range xsd:decimal .
+
+ex:hasHandlingFee a rdf:Property ;
+    rdfs:label "Handling Fee" ;
+    rdfs:range xsd:decimal .
+
+ex:hasHandlingIn a rdf:Property ;
+    rdfs:label "Handling In" ;
+    rdfs:range xsd:decimal .
+
+ex:hasHandlingOut a rdf:Property ;
+    rdfs:label "Handling out" ;
+    rdfs:range xsd:decimal .
+
+ex:hasLocation a rdf:Property ;
+    rdfs:label "Location" ;
+    rdfs:range xsd:string .
+
+ex:hasOperationMonth a rdf:Property ;
+    rdfs:label "Operation Month" ;
+    rdfs:range xsd:date .
+
+ex:hasPackageCount a rdf:Property ;
+    rdfs:label "pkg" ;
+    rdfs:range xsd:integer .
+
+ex:hasQuantity a rdf:Property ;
+    rdfs:label "Qty" ;
+    rdfs:range xsd:integer .
+
+ex:hasStartDate a rdf:Property ;
+    rdfs:label "Start" ;
+    rdfs:range xsd:date .
+
+ex:hasStuffing a rdf:Property ;
+    rdfs:label "Stuffing" ;
+    rdfs:range xsd:decimal .
+
+ex:hasTotalAmount a rdf:Property ;
+    rdfs:label "TOTAL" ;
+    rdfs:range xsd:decimal .
+
+ex:hasTransactionType a rdf:Property ;
+    rdfs:label "TxType_Refined" ;
+    rdfs:range xsd:string .
+
+ex:hasUnstuffing a rdf:Property ;
+    rdfs:label "Unstuffing" ;
+    rdfs:range xsd:decimal .
+
+ex:hasVendor a rdf:Property ;
+    rdfs:label "Vendor" ;
+    rdfs:range xsd:string .
+
+ex:hasWeight a rdf:Property ;
+    rdfs:label "Weight (kg)" ;
+    rdfs:range xsd:decimal .
+

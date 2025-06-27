@@ -1,0 +1,323 @@
+@prefix ex: <http://samsung.com/project-logistics#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:TransportEvent_00001 a ex:TransportEvent ;
+    ex:has20FRContainer 1.0 ;
+    ex:has20FTContainer 2.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 2.0 ;
+    ex:hasAmount 44341.313177352306 ;
+    ex:hasCBM 10.946028877664263 ;
+    ex:hasCase "CASE001" ;
+    ex:hasDate "2024-01-01 00:00:00" ;
+    ex:hasHandlingFee 489.02304220819383 ;
+    ex:hasLocation "DSV Indoor" ;
+    ex:hasQuantity 24.0 ;
+    ex:hasTransactionType "IN" ;
+    ex:hasVendor "SAMSUNG" ;
+    ex:hasWeight 816.6132570013893 .
+
+ex:TransportEvent_00002 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 2.0 ;
+    ex:has40FRContainer 0.0 ;
+    ex:has40FTContainer 0.0 ;
+    ex:hasAmount 16482.664175186663 ;
+    ex:hasCBM 70.09653443385554 ;
+    ex:hasCase "CASE002" ;
+    ex:hasDate "2024-01-02 00:00:00" ;
+    ex:hasHandlingFee 443.09308471519427 ;
+    ex:hasLocation "DSV Outdoor" ;
+    ex:hasQuantity 71.0 ;
+    ex:hasTransactionType "FINAL_OUT" ;
+    ex:hasVendor "SIMENSE" ;
+    ex:hasWeight 355.32525188636083 .
+
+ex:TransportEvent_00003 a ex:TransportEvent ;
+    ex:has20FRContainer 1.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 0.0 ;
+    ex:has40FTContainer 2.0 ;
+    ex:hasAmount 12856.733162334038 ;
+    ex:hasCBM 70.91778020617265 ;
+    ex:hasCase "CASE003" ;
+    ex:hasDate "2024-01-03 00:00:00" ;
+    ex:hasHandlingFee 424.1312697269209 ;
+    ex:hasLocation "DSV MZP" ;
+    ex:hasQuantity 755.0 ;
+    ex:hasTransactionType "FINAL_OUT" ;
+    ex:hasVendor "HITACHI" ;
+    ex:hasWeight 342.967640848296 .
+
+ex:TransportEvent_00004 a ex:TransportEvent ;
+    ex:has20FRContainer 1.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 0.0 ;
+    ex:hasAmount 20002.442251272085 ;
+    ex:hasCBM 18.076677269771142 ;
+    ex:hasCase "CASE004" ;
+    ex:hasDate "2024-01-04 00:00:00" ;
+    ex:hasHandlingFee 304.2579989455778 ;
+    ex:hasLocation "AGI" ;
+    ex:hasQuantity 349.0 ;
+    ex:hasTransactionType "IN" ;
+    ex:hasVendor "HITACHI" ;
+    ex:hasWeight 722.8220456239328 .
+
+ex:TransportEvent_00005 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 4.0 ;
+    ex:has40FRContainer 0.0 ;
+    ex:has40FTContainer 2.0 ;
+    ex:hasAmount 8329.574451404962 ;
+    ex:hasCBM 66.75431085764363 ;
+    ex:hasCase "CASE005" ;
+    ex:hasDate "2024-01-05 00:00:00" ;
+    ex:hasHandlingFee 276.09554935248474 ;
+    ex:hasLocation "DAS" ;
+    ex:hasQuantity 99.0 ;
+    ex:hasTransactionType "FINAL_OUT" ;
+    ex:hasVendor "HITACHI" ;
+    ex:hasWeight 669.025928393124 .
+
+ex:TransportEvent_00006 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 3.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 1.0 ;
+    ex:hasAmount 32968.33269551126 ;
+    ex:hasCBM 96.7702596368068 ;
+    ex:hasCase "CASE006" ;
+    ex:hasDate "2024-02-01 00:00:00" ;
+    ex:hasHandlingFee 185.47588716456346 ;
+    ex:hasLocation "DSV Indoor" ;
+    ex:hasQuantity 45.0 ;
+    ex:hasTransactionType "TRANSFER_OUT" ;
+    ex:hasVendor "HITACHI" ;
+    ex:hasWeight 286.1872106789105 .
+
+ex:TransportEvent_00007 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 0.0 ;
+    ex:hasAmount 8334.920101037604 ;
+    ex:hasCBM 52.385001437346965 ;
+    ex:hasCase "CASE007" ;
+    ex:hasDate "2024-02-02 00:00:00" ;
+    ex:hasHandlingFee 447.77256048031086 ;
+    ex:hasLocation "DSV Outdoor" ;
+    ex:hasQuantity 586.0 ;
+    ex:hasTransactionType "FINAL_OUT" ;
+    ex:hasVendor "ETC" ;
+    ex:hasWeight 420.7351004550647 .
+
+ex:TransportEvent_00008 a ex:TransportEvent ;
+    ex:has20FRContainer 1.0 ;
+    ex:has20FTContainer 3.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 2.0 ;
+    ex:hasAmount 30130.049796130337 ;
+    ex:hasCBM 61.87561743940348 ;
+    ex:hasCase "CASE008" ;
+    ex:hasDate "2024-02-03 00:00:00" ;
+    ex:hasHandlingFee 495.30151278847245 ;
+    ex:hasLocation "MOSB" ;
+    ex:hasQuantity 14.0 ;
+    ex:hasTransactionType "IN" ;
+    ex:hasVendor "SIMENSE" ;
+    ex:hasWeight 795.845572942504 .
+
+ex:TransportEvent_00009 a ex:TransportEvent ;
+    ex:has20FRContainer 1.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 0.0 ;
+    ex:hasAmount 48970.851346189775 ;
+    ex:hasCBM 69.29011714788508 ;
+    ex:hasCase "CASE009" ;
+    ex:hasDate "2024-02-04 00:00:00" ;
+    ex:hasHandlingFee 412.4004826955005 ;
+    ex:hasLocation "MIR" ;
+    ex:hasQuantity 987.0 ;
+    ex:hasTransactionType "TRANSFER_OUT" ;
+    ex:hasVendor "SAMSUNG" ;
+    ex:hasWeight 896.5810796136811 .
+
+ex:TransportEvent_00010 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 1.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 0.0 ;
+    ex:hasAmount 27095.578242154563 ;
+    ex:hasCBM 33.21001583041176 ;
+    ex:hasCase "CASE010" ;
+    ex:hasDate "2024-02-05 00:00:00" ;
+    ex:hasHandlingFee 395.9186289223297 ;
+    ex:hasLocation "SHU" ;
+    ex:hasQuantity 368.0 ;
+    ex:hasTransactionType "TRANSFER_OUT" ;
+    ex:hasVendor "ZENER" ;
+    ex:hasWeight 643.4162855043961 .
+
+ex:TransportEvent_00011 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 2.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 2.0 ;
+    ex:hasAmount 12979.801122668692 ;
+    ex:hasCBM 66.39292947727162 ;
+    ex:hasCase "CASE011" ;
+    ex:hasDate "2024-03-01 00:00:00" ;
+    ex:hasHandlingFee 232.55489805036538 ;
+    ex:hasLocation "DSV Indoor" ;
+    ex:hasQuantity 822.0 ;
+    ex:hasTransactionType "IN" ;
+    ex:hasVendor "ZENER" ;
+    ex:hasWeight 11.913649837233946 .
+
+ex:TransportEvent_00012 a ex:TransportEvent ;
+    ex:has20FRContainer 1.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 1.0 ;
+    ex:hasAmount 30916.316867221198 ;
+    ex:hasCBM 45.63534789235008 ;
+    ex:hasCase "CASE012" ;
+    ex:hasDate "2024-03-02 00:00:00" ;
+    ex:hasHandlingFee 184.13986917621693 ;
+    ex:hasLocation "DSV Al Markaz" ;
+    ex:hasQuantity 149.0 ;
+    ex:hasTransactionType "FINAL_OUT" ;
+    ex:hasVendor "SAMSUNG" ;
+    ex:hasWeight 759.3272966399852 .
+
+ex:TransportEvent_00013 a ex:TransportEvent ;
+    ex:has20FRContainer 1.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 0.0 ;
+    ex:hasAmount 5768.829576907653 ;
+    ex:hasCBM 18.149567994922425 ;
+    ex:hasCase "CASE013" ;
+    ex:hasDate "2024-03-03 00:00:00" ;
+    ex:hasHandlingFee 386.52083483981687 ;
+    ex:hasLocation "DSV MZP" ;
+    ex:hasQuantity 916.0 ;
+    ex:hasTransactionType "TRANSFER_OUT" ;
+    ex:hasVendor "SAMSUNG" ;
+    ex:hasWeight 643.2619970535983 .
+
+ex:TransportEvent_00014 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 2.0 ;
+    ex:has40FRContainer 0.0 ;
+    ex:has40FTContainer 1.0 ;
+    ex:hasAmount 30886.519917288966 ;
+    ex:hasCBM 9.82738430688694 ;
+    ex:hasCase "CASE014" ;
+    ex:hasDate "2024-03-04 00:00:00" ;
+    ex:hasHandlingFee 288.41741136477015 ;
+    ex:hasLocation "AGI" ;
+    ex:hasQuantity 345.0 ;
+    ex:hasTransactionType "FINAL_OUT" ;
+    ex:hasVendor "HITACHI" ;
+    ex:hasWeight 316.9048147209997 .
+
+ex:TransportEvent_00015 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 0.0 ;
+    ex:has40FTContainer 2.0 ;
+    ex:hasAmount 43431.04601196106 ;
+    ex:hasCBM 27.104178209869147 ;
+    ex:hasCase "CASE015" ;
+    ex:hasDate "2024-03-05 00:00:00" ;
+    ex:hasHandlingFee 373.9792708564174 ;
+    ex:hasLocation "DAS" ;
+    ex:hasQuantity 593.0 ;
+    ex:hasTransactionType "FINAL_OUT" ;
+    ex:hasVendor "ZENER" ;
+    ex:hasWeight 538.4619999601199 .
+
+ex:TransportEvent_00016 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 1.0 ;
+    ex:hasAmount 13117.80892464158 ;
+    ex:hasCBM 36.386887807169536 ;
+    ex:hasCase "CASE016" ;
+    ex:hasDate "2024-04-01 00:00:00" ;
+    ex:hasHandlingFee 406.0788135359728 ;
+    ex:hasLocation "DSV Indoor" ;
+    ex:hasQuantity 208.0 ;
+    ex:hasTransactionType "IN" ;
+    ex:hasVendor "SIMENSE" ;
+    ex:hasWeight 786.1805547554305 .
+
+ex:TransportEvent_00017 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 1.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 2.0 ;
+    ex:hasAmount 6634.46662461472 ;
+    ex:hasCBM 19.227903227451215 ;
+    ex:hasCase "CASE017" ;
+    ex:hasDate "2024-04-02 00:00:00" ;
+    ex:hasHandlingFee 254.27581599242995 ;
+    ex:hasLocation "DSV Outdoor" ;
+    ex:hasQuantity 11.0 ;
+    ex:hasTransactionType "FINAL_OUT" ;
+    ex:hasVendor "ETC" ;
+    ex:hasWeight 595.6659945885806 .
+
+ex:TransportEvent_00018 a ex:TransportEvent ;
+    ex:has20FRContainer 1.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 0.0 ;
+    ex:has40FTContainer 1.0 ;
+    ex:hasAmount 12887.421362047373 ;
+    ex:hasCBM 36.21248975669252 ;
+    ex:hasCase "CASE018" ;
+    ex:hasDate "2024-04-03 00:00:00" ;
+    ex:hasHandlingFee 282.30122137834724 ;
+    ex:hasLocation "MOSB" ;
+    ex:hasQuantity 577.0 ;
+    ex:hasTransactionType "IN" ;
+    ex:hasVendor "ETC" ;
+    ex:hasWeight 154.5504367192623 .
+
+ex:TransportEvent_00019 a ex:TransportEvent ;
+    ex:has20FRContainer 1.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 1.0 ;
+    ex:hasAmount 16830.155160473027 ;
+    ex:hasCBM 5.968386266577975 ;
+    ex:hasCase "CASE019" ;
+    ex:hasDate "2024-04-04 00:00:00" ;
+    ex:hasHandlingFee 150.95276692894117 ;
+    ex:hasLocation "MIR" ;
+    ex:hasQuantity 239.0 ;
+    ex:hasTransactionType "FINAL_OUT" ;
+    ex:hasVendor "HITACHI" ;
+    ex:hasWeight 304.22015732534396 .
+
+ex:TransportEvent_00020 a ex:TransportEvent ;
+    ex:has20FRContainer 0.0 ;
+    ex:has20FTContainer 0.0 ;
+    ex:has40FRContainer 1.0 ;
+    ex:has40FTContainer 1.0 ;
+    ex:hasAmount 14124.515838873987 ;
+    ex:hasCBM 18.313158434750893 ;
+    ex:hasCase "CASE020" ;
+    ex:hasDate "2024-04-05 00:00:00" ;
+    ex:hasHandlingFee 206.5715663420198 ;
+    ex:hasLocation "SHU" ;
+    ex:hasQuantity 97.0 ;
+    ex:hasTransactionType "IN" ;
+    ex:hasVendor "HITACHI" ;
+    ex:hasWeight 966.9498475153503 .
+

@@ -1,0 +1,77 @@
+# HVDC Warehouse Management System - 임계값 설정
+# 오차 허용 범위 및 알람 한계 정의
+
+# 재고 오차 허용 범위 (%)
+inventory_tolerance:
+  default: 1.5
+  critical: 5.0
+  warning: 2.5
+  
+# 창고별 오차 허용 범위
+warehouse_tolerance:
+  "DSV Al Markaz":
+    default: 2.0
+    critical: 5.0
+  "DSV Indoor":
+    default: 1.5
+    critical: 4.0
+  "DSV Outdoor":
+    default: 2.5
+    critical: 6.0
+  "DSV MZP":
+    default: 2.0
+    critical: 5.0
+  "MOSB":
+    default: 2.0
+    critical: 5.0
+
+# 트랜잭션 검증 임계값
+transaction_thresholds:
+  # 최소 트랜잭션 수
+  min_transactions: 10
+  # 최대 트랜잭션 수 (이상치 탐지)
+  max_transactions: 10000
+  # 중복 허용 비율 (%)
+  max_duplicate_ratio: 5.0
+  # TRANSFER 짝 불일치 허용 비율 (%)
+  max_transfer_mismatch_ratio: 1.0
+
+# 성능 임계값
+performance_thresholds:
+  # 최대 처리 시간 (초)
+  max_processing_time: 300
+  # 최대 메모리 사용량 (MB)
+  max_memory_usage: 2048
+  # 최대 파일 크기 (MB)
+  max_file_size: 100
+
+# 알람 설정
+alerts:
+  # 재고 오차 알람
+  inventory_variance:
+    enabled: true
+    threshold: 2.0
+    notification: ["email", "slack"]
+  
+  # 데이터 손실 알람
+  data_loss:
+    enabled: true
+    threshold: 0.1  # 0.1% 이상 손실 시
+    notification: ["email", "slack"]
+  
+  # 시스템 오류 알람
+  system_error:
+    enabled: true
+    notification: ["email", "slack", "sms"]
+
+# 검증 모드 설정
+validation_modes:
+  strict:
+    tolerance: 1.0
+    action: "error"
+  reference:
+    tolerance: 2.0
+    action: "warn"
+  none:
+    tolerance: 999.0
+    action: "skip" 

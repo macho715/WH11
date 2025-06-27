@@ -1,0 +1,33 @@
+@prefix ex: <http://example.com/hvdc#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:TransportEvent_00001 a ex:TransportEvent ;
+    ex:hasAmount 58782.5 ;
+    ex:hasCase "HVDC-ADOPT-HE-0001" ;
+    ex:hasStorageType "Outdoor" .
+
+ex:TransportEvent_00002 a ex:TransportEvent ;
+    ex:hasAmount 5770.0 ;
+    ex:hasCase "HVDC-ADOPT-HE-0002" ;
+    ex:hasStorageType "Outdoor" .
+
+ex:TransportEvent_00003 a ex:TransportEvent ;
+    ex:hasAmount 45131.1 ;
+    ex:hasCase "HVDC-ADOPT-HE-0003" ;
+    ex:hasStorageType "Outdoor" .
+
+ex:TransportEvent_00004 a ex:TransportEvent ;
+    ex:hasAmount 29160.28 ;
+    ex:hasCase "HVDC-ADOPT-HE-0003" ;
+    ex:hasStorageType "Indoor(M44)" .
+
+ex:TransportEvent_00005 a ex:TransportEvent ;
+    ex:hasAmount 3030.0 ;
+    ex:hasCase "HVDC-ADOPT-HE-0012" ;
+    ex:hasStorageType "Outdoor" .
+
+ex:TransportEvent_00006 a ex:TransportEvent ;
+    ex:hasAmount 515.0 ;
+    ex:hasCase "HVDC-ADOPT-HE-0013" ;
+    ex:hasStorageType "Outdoor" .
+

@@ -1,0 +1,150 @@
+{
+  "namespace": "http://samsung.com/project-logistics#",
+  "version": "2.6",
+  "description": "HVDC 통합 온톨로지·매핑 규칙 v2.6 (컨테이너/비용/벤더/하역/장비/특수기호 등 완전지원) - 최신 실전 예제 및 확장 자동화 템플릿",
+  "namespaces": {
+    "ex": "http://samsung.com/project-logistics#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "field_map": {
+    "Case_No": "hasCase",
+    "Operation Month": "hasOperationMonth",
+    "Date": "hasDate",
+    "Qty": "hasQuantity",
+    "Location": "hasLocation",
+    "Category": "hasCategory",
+    "TxType_Refined": "hasTransactionType",
+    "Vendor": "hasVendor",
+    "Amount": "hasAmount",
+    "TOTAL": "hasTotalAmount",
+    "CBM": "hasCBM",
+    "Weight (kg)": "hasWeight",
+    "Handling In": "hasHandlingIn",
+    "Handling out": "hasHandlingOut",
+    "Handling Fee": "hasHandlingFee",
+    "Unstuffing": "hasUnstuffing",
+    "Stuffing": "hasStuffing",
+    "folk lift": "hasForklift",
+    "crane": "hasCrane",
+    "20FT": "has20FTContainer",
+    "40FT": "has40FTContainer",
+    "20FR": "has20FRContainer",
+    "40FR": "has40FRContainer",
+    "CNTR Stuffing Q'TY": "hasContainerStuffing",
+    "CNTR Unstuffing Q'TY": "hasContainerUnstuffing",
+    "Start": "hasStartDate",
+    "Finish": "hasFinishDate",
+    "pkg": "hasPackageCount",
+    "Custom Field": "hasCustomField"
+  },
+  
+  "warehouse_classification": {
+    "Indoor": ["DSV Indoor", "DSV Al Markaz", "Hauler Indoor"],
+    "Outdoor": ["DSV Outdoor", "DSV MZP", "MOSB"],
+    "Site": ["AGI", "DAS", "MIR", "SHU"],
+    "dangerous_cargo": ["AAA Storage", "Dangerous Storage"]
+  },
+  
+  "vendor_mappings": {
+    "SIMENSE": "SIM", "SIM": "SIM", "SEI": "SIM",
+    "HITACHI": "HITACHI", "HE": "HITACHI",
+    "SCT": "SAMSUNG", "SAMSUNG": "SAMSUNG",
+    "ZEN": "ZENER", "ZENER": "ZENER", "ETC": "ETC"
+  },
+  
+  "container_column_groups": {
+    "20FT": ["20FT", "20'FT", "20DC", "20dc", "20ft", "20feet", "20'"],
+    "40FT": ["40FT", "40'FT", "40DC", "40dc", "40ft", "40feet", "40'"],
+    "20FR": ["20FR", "20fr", "20frt", "20fr(ft)", "20'FR", "20'fr"],
+    "40FR": ["40FR", "40fr", "40frt", "40fr(ft)", "40'FR", "40'fr"]
+  },
+  
+  "property_mappings": {
+    "Case_No": {"predicate": "hasCase", "datatype": "xsd:string"},
+    "Operation Month": {"predicate": "hasOperationMonth", "datatype": "xsd:date"},
+    "Date": {"predicate": "hasDate", "datatype": "xsd:dateTime"},
+    "Qty": {"predicate": "hasQuantity", "datatype": "xsd:integer"},
+    "Location": {"predicate": "hasLocation", "datatype": "xsd:string"},
+    "Category": {"predicate": "hasCategory", "datatype": "xsd:string"},
+    "TxType_Refined": {"predicate": "hasTransactionType", "datatype": "xsd:string"},
+    "Vendor": {"predicate": "hasVendor", "datatype": "xsd:string"},
+    "Amount": {"predicate": "hasAmount", "datatype": "xsd:decimal"},
+    "TOTAL": {"predicate": "hasTotalAmount", "datatype": "xsd:decimal"},
+    "CBM": {"predicate": "hasCBM", "datatype": "xsd:decimal"},
+    "Weight (kg)": {"predicate": "hasWeight", "datatype": "xsd:decimal"},
+    "Handling In": {"predicate": "hasHandlingIn", "datatype": "xsd:decimal"},
+    "Handling out": {"predicate": "hasHandlingOut", "datatype": "xsd:decimal"},
+    "Handling Fee": {"predicate": "hasHandlingFee", "datatype": "xsd:decimal"},
+    "Unstuffing": {"predicate": "hasUnstuffing", "datatype": "xsd:decimal"},
+    "Stuffing": {"predicate": "hasStuffing", "datatype": "xsd:decimal"},
+    "folk lift": {"predicate": "hasForklift", "datatype": "xsd:decimal"},
+    "crane": {"predicate": "hasCrane", "datatype": "xsd:decimal"},
+    "20FT": {"predicate": "has20FTContainer", "datatype": "xsd:integer"},
+    "40FT": {"predicate": "has40FTContainer", "datatype": "xsd:integer"},
+    "20FR": {"predicate": "has20FRContainer", "datatype": "xsd:integer"},
+    "40FR": {"predicate": "has40FRContainer", "datatype": "xsd:integer"},
+    "CNTR Stuffing Q'TY": {"predicate": "hasContainerStuffing", "datatype": "xsd:integer"},
+    "CNTR Unstuffing Q'TY": {"predicate": "hasContainerUnstuffing", "datatype": "xsd:integer"},
+    "Start": {"predicate": "hasStartDate", "datatype": "xsd:date"},
+    "Finish": {"predicate": "hasFinishDate", "datatype": "xsd:date"},
+    "pkg": {"predicate": "hasPackageCount", "datatype": "xsd:integer"},
+    "Custom Field": {"predicate": "hasCustomField", "datatype": "xsd:string"}
+  },
+  
+  "class_mappings": {
+    "TransportEvent": "TransportEvent",
+    "StockSnapshot": "StockSnapshot",
+    "Warehouse": "Warehouse",
+    "IndoorWarehouse": "IndoorWarehouse",
+    "OutdoorWarehouse": "OutdoorWarehouse",
+    "DangerousCargoWarehouse": "DangerousCargoWarehouse",
+    "Site": "Site",
+    "Case": "Case",
+    "Item": "Item",
+    "Container": "Container",
+    "Charge": "Charge",
+    "Vendor": "Vendor",
+    "Dataset": "Dataset"
+  },
+  
+  "sparql_templates": {
+    "monthly_warehouse_summary": "PREFIX ex: <{namespace}> SELECT ?month ?warehouse (SUM(?amount) AS ?totalAmount) (SUM(?qty) AS ?totalQty) WHERE { ?event rdf:type ex:TransportEvent ; ex:hasLocation ?warehouse ; ex:hasDate ?date ; ex:hasAmount ?amount ; ex:hasQuantity ?qty . BIND(SUBSTR(STR(?date), 1, 7) AS ?month) } GROUP BY ?month ?warehouse ORDER BY ?month ?warehouse",
+    "vendor_analysis": "PREFIX ex: <{namespace}> SELECT ?vendor (SUM(?amount) AS ?totalAmount) (COUNT(?event) AS ?eventCount) WHERE { ?event rdf:type ex:TransportEvent ; ex:hasVendor ?vendor ; ex:hasAmount ?amount . } GROUP BY ?vendor ORDER BY DESC(?totalAmount)",
+    "container_summary": "PREFIX ex: <{namespace}> SELECT ?warehouse (SUM(?container20) AS ?total20FT) (SUM(?container40) AS ?total40FT) WHERE { ?event rdf:type ex:TransportEvent ; ex:hasLocation ?warehouse ; ex:has20FTContainer ?container20 ; ex:has40FTContainer ?container40 . } GROUP BY ?warehouse ORDER BY ?warehouse",
+    "handling_fee_analysis": "PREFIX ex: <{namespace}> SELECT ?month ?warehouse (SUM(?handlingFee) AS ?totalHandlingFee) WHERE { ?event rdf:type ex:TransportEvent ; ex:hasLocation ?warehouse ; ex:hasDate ?date ; ex:hasHandlingFee ?handlingFee . BIND(SUBSTR(STR(?date), 1, 7) AS ?month) } GROUP BY ?month ?warehouse ORDER BY ?month ?warehouse"
+  },
+  
+  "automation_features": {
+    "auto_field_detection": true,
+    "auto_aggregation": true,
+    "auto_report_generation": true,
+    "auto_rdf_conversion": true,
+    "auto_sparql_generation": true,
+    "validation_rules": {
+      "required_fields": ["Case_No", "Date", "Location", "Qty"],
+      "numeric_fields": ["Qty", "Amount", "Handling Fee", "CBM", "Weight (kg)"],
+      "date_fields": ["Date", "Start", "Finish", "Operation Month"]
+    }
+  },
+  
+  "report_templates": {
+    "monthly_summary": {
+      "sheets": ["01_월별IN_창고현장", "02_월별OUT_창고현장", "03_월별재고_창고현장"],
+      "aggregations": ["월별", "창고별", "벤더별"],
+      "metrics": ["수량", "금액", "하역비"]
+    },
+    "detailed_analysis": {
+      "sheets": ["통계요약", "벤더별집계", "컨테이너별집계"],
+      "aggregations": ["월별", "창고별", "카테고리별"],
+      "metrics": ["수량", "금액", "하역비", "CBM", "무게"]
+    }
+  },
+  
+  "extension_guide": {
+    "new_field_adding": "field_map과 property_mappings에 한 줄 추가하면 자동으로 모든 리포트/RDF/쿼리에 반영됨",
+    "new_vendor_adding": "vendor_mappings에 추가하면 자동으로 벤더 정규화에 반영됨",
+    "new_container_adding": "container_column_groups에 추가하면 자동으로 컨테이너 표준화에 반영됨",
+    "new_sparql_template": "sparql_templates에 추가하면 자동으로 쿼리 생성에 반영됨"
+  }
+} 

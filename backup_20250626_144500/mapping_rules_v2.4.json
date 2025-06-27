@@ -1,0 +1,244 @@
+{
+  "namespace": "http://samsung.com/project-logistics#",
+  "version": "2.4",
+  "class_mappings": {
+    "TransportEvent": "TransportEvent",
+    "StockSnapshot": "StockSnapshot",
+    "Warehouse": "Warehouse",
+    "IndoorWarehouse": "IndoorWarehouse",
+    "OutdoorWarehouse": "OutdoorWarehouse",
+    "DangerousCargoWarehouse": "DangerousCargoWarehouse",
+    "Site": "Site",
+    "Case": "Case"
+  },
+  "property_mappings": {
+    "Case_No": {
+      "predicate": "hasCase",
+      "datatype": "xsd:string"
+    },
+    "Date": {
+      "predicate": "hasDate",
+      "datatype": "xsd:dateTime"
+    },
+    "Qty": {
+      "predicate": "hasQuantity",
+      "datatype": "xsd:integer"
+    },
+    "Location": {
+      "predicate": "hasLocation",
+      "datatype": "xsd:string"
+    },
+    "TxType_Refined": {
+      "predicate": "hasTransactionType",
+      "datatype": "xsd:string"
+    },
+    "Status_Current": {
+      "predicate": "hasCurrentStatus",
+      "datatype": "xsd:string"
+    },
+    "Status_Storage": {
+      "predicate": "hasStorageType",
+      "datatype": "xsd:string"
+    }
+  },
+  "warehouse_classification": {
+    "Indoor": [
+      "DSV Indoor",
+      "DSV Al Markaz",
+      "Hauler Indoor"
+    ],
+    "Outdoor": [
+      "DSV Outdoor",
+      "DSV MZP",
+      "MOSB"
+    ],
+    "Site": [
+      "AGI",
+      "DAS",
+      "MIR",
+      "SHU"
+    ],
+    "dangerous_cargo": [
+      "AAA Storage",
+      "Dangerous Storage"
+    ]
+  },
+  "excel_column_mappings": {
+    "case_columns": [
+      "Case No",
+      "Case_No",
+      "MR#",
+      "Carton",
+      "Box",
+      "SCT Ship No"
+    ],
+    "quantity_columns": [
+      "Q'ty",
+      "Qty",
+      "Quantity",
+      "Received",
+      "P'kg",
+      "Pkg"
+    ],
+    "warehouse_date_columns": {
+      "DSV Al Markaz": [
+        "Al Markaz",
+        "AlMarkaz",
+        "M1",
+        "Markaz"
+      ],
+      "DSV Indoor": [
+        "Indoor",
+        "M44",
+        "Hauler Indoor"
+      ],
+      "DSV Outdoor": [
+        "Outdoor",
+        "Out"
+      ],
+      "MOSB": [
+        "MOSB"
+      ],
+      "DSV MZP": [
+        "MZP"
+      ],
+      "AGI": [
+        "AGI"
+      ],
+      "DAS": [
+        "DAS"
+      ],
+      "MIR": [
+        "MIR"
+      ],
+      "SHU": [
+        "SHU"
+      ],
+      "Hauler Indoor": [
+        "Hauler Indoor",
+        "Hauler(Indoor)"
+      ],
+      "AAA Storage": [
+        "AAA Storage",
+        "AAA"
+      ]
+    },
+    "status_columns": {
+      "Status_WAREHOUSE": "AK",
+      "Status_SITE": "AL",
+      "Status_Current": "AM",
+      "Status_Location": "AN",
+      "Status_Storage": "AO"
+    }
+  },
+  "transaction_type_mappings": {
+    "IN": {
+      "description": "입고",
+      "conditions": [
+        "incoming > 0",
+        "새로운 위치 도착"
+      ]
+    },
+    "TRANSFER_OUT": {
+      "description": "창고간 이동 출고",
+      "conditions": [
+        "Status_Current = '창고'",
+        "창고 → 창고"
+      ]
+    },
+    "FINAL_OUT": {
+      "description": "현장 배송 출고",
+      "conditions": [
+        "Status_Current = '현장'",
+        "창고 → 현장"
+      ]
+    }
+  },
+  "status_logic": {
+    "Status_WAREHOUSE": "IF(COUNTA(Z2:AE2)>0, 1, 0)",
+    "Status_SITE": "IF(COUNTA(AG2:AJ2)>0, 1, 0)",
+    "Status_Current": "IF(AL2=1,'현장',IF(AK2=1,'창고',''))",
+    "Status_Location": "INDEX/MATCH logic for latest date column",
+    "Status_Storage": {
+      "Indoor": [
+        "DSV Indoor",
+        "DSV Al Markaz",
+        "Hauler Indoor"
+      ],
+      "Outdoor": [
+        "DSV MZP",
+        "DSV Outdoor",
+        "MOSB"
+      ],
+      "Site": [
+        "MIR",
+        "SHU",
+        "DAS",
+        "AGI"
+      ],
+      "dangerous_cargo": [
+        "Dangerous",
+        "aaa storage"
+      ]
+    }
+  },
+  "ontology_hierarchy": {
+    "classes": {
+      "Thing": {
+        "subclasses": [
+          "Event",
+          "Location",
+          "Object"
+        ]
+      },
+      "Event": {
+        "subclasses": [
+          "TransportEvent",
+          "StockSnapshot"
+        ]
+      },
+      "Location": {
+        "subclasses": [
+          "Warehouse",
+          "Site"
+        ]
+      },
+      "Warehouse": {
+        "subclasses": [
+          "IndoorWarehouse",
+          "OutdoorWarehouse",
+          "DangerousCargoWarehouse"
+        ]
+      },
+      "Object": {
+        "subclasses": [
+          "Case",
+          "Item"
+        ]
+      }
+    },
+    "properties": {
+      "object_properties": [
+        "hasLocation",
+        "fromLocation",
+        "toLocation"
+      ],
+      "datatype_properties": [
+        "hasCase",
+        "hasDate",
+        "hasQuantity",
+        "hasTransactionType"
+      ],
+      "annotation_properties": [
+        "rdfs:label",
+        "rdfs:comment"
+      ]
+    }
+  },
+  "sparql_templates": {
+    "latest_stock": "\nPREFIX ex: <{namespace}>\nSELECT ?warehouse ?stock ?date\nWHERE {{\n    ?snapshot rdf:type ex:StockSnapshot ;\n              ex:hasLocation ?warehouse ;\n              ex:hasClosingStock ?stock ;\n              ex:hasDate ?date .\n    {{\n        SELECT ?warehouse (MAX(?date) AS ?maxDate)\n        WHERE {{\n            ?s ex:hasLocation ?warehouse ;\n               ex:hasDate ?date .\n        }}\n        GROUP BY ?warehouse\n    }}\n    FILTER(?date = ?maxDate)\n}}\nORDER BY DESC(?stock)\n",
+    "dangerous_cargo": "\nPREFIX ex: <{namespace}>\nSELECT ?warehouse ?stock\nWHERE {{\n    ?snapshot ex:hasLocation ?warehouse ;\n              ex:hasClosingStock ?stock .\n    ?warehouse rdf:type ex:DangerousCargoWarehouse .\n}}\n",
+    "site_deliveries": "\nPREFIX ex: <{namespace}>\nSELECT ?case ?site ?date ?quantity\nWHERE {{\n    ?event rdf:type ex:TransportEvent ;\n           ex:hasCase ?case ;\n           ex:hasLocation ?site ;\n           ex:hasDate ?date ;\n           ex:hasQuantity ?quantity ;\n           ex:hasTransactionType \"FINAL_OUT\" .\n    ?site rdf:type ex:Site .\n}}\nORDER BY DESC(?date)\n",
+    "transfer_chain": "\nPREFIX ex: <{namespace}>\nSELECT ?case ?from ?to ?date\nWHERE {{\n    ?event rdf:type ex:TransportEvent ;\n           ex:hasCase ?case ;\n           ex:fromLocation ?from ;\n           ex:toLocation ?to ;\n           ex:hasDate ?date ;\n           ex:hasTransactionType \"TRANSFER_OUT\" .\n}}\nORDER BY ?case ?date\n"
+  }
+}

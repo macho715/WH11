@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>HVDC 월별 오차 알람 리포트</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { background-color: #ff4444; color: white; padding: 20px; border-radius: 5px; }
+        .alert-summary { background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .alert-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .alert-table th, .alert-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .alert-table th { background-color: #f2f2f2; }
+        .high-variance { background-color: #ffebee; }
+        .medium-variance { background-color: #fff3e0; }
+        .low-variance { background-color: #f1f8e9; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚨 HVDC 월별 오차 알람 리포트</h1>
+        <p>생성일시: 2025-06-26 15:36:04</p>
+    </div>
+    
+    <div class="alert-summary">
+        <h2>📊 알람 요약</h2>
+        <p><strong>임계값:</strong> 10.0%</p>
+        <p><strong>알람 건수:</strong> 1개월</p>
+        <p><strong>요약:</strong> 🚨 월별 오차 알람 (10.0% 이상)
+• 총 1개월 오차 발생
+• 최대 오차율: 100.0%
+• 평균 오차율: 100.0%</p>
+    </div>
+    
+    <h2>📋 상세 알람 내역</h2>
+    <table class="alert-table">
+        <thead>
+            <tr>
+                <th>년월</th>
+                <th>청구액</th>
+                <th>실적액</th>
+                <th>오차</th>
+                <th>오차율(%)</th>
+                <th>오차사유</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr class="high-variance">
+                <td>2024-04</td>
+                <td>1,400,000</td>
+                <td>0</td>
+                <td>1,400,000</td>
+                <td>100.0%</td>
+                <td>미승인</td>
+            </tr>
+
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 30px; padding: 15px; background-color: #e3f2fd; border-radius: 5px;">
+        <h3>📝 권장 조치사항</h3>
+        <ul>
+            <li><strong>미승인:</strong> 해당 월 실적 데이터 확인 및 승인 처리</li>
+            <li><strong>대폭조정 (30% 이상):</strong> 청구 내용과 실적 내용 상세 검토</li>
+            <li><strong>조정 (10-30%):</strong> 일반적인 조정 범위, 정상 처리</li>
+            <li><strong>소폭조정 (5-10%):</strong> 미미한 차이, 모니터링</li>
+        </ul>
+    </div>
+</body>
+</html>

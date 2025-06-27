@@ -1,0 +1,44 @@
+{
+  "valid_warehouse_ids": [
+    "DSV Indoor",
+    "DSV Al Markaz", 
+    "Hauler Indoor",
+    "DSV Outdoor",
+    "DSV MZP",
+    "MOSB",
+    "AGI",
+    "DAS",
+    "MIR",
+    "SHU",
+    "AAA Storage",
+    "Dangerous Storage"
+  ],
+  "warehouse_classification": {
+    "Indoor": [
+      "DSV Indoor",
+      "DSV Al Markaz",
+      "Hauler Indoor"
+    ],
+    "Outdoor": [
+      "DSV Outdoor",
+      "DSV MZP",
+      "MOSB"
+    ],
+    "Site": [
+      "AGI",
+      "DAS",
+      "MIR",
+      "SHU"
+    ],
+    "dangerous_cargo": [
+      "AAA Storage",
+      "Dangerous Storage"
+    ]
+  },
+  "metadata": {
+    "source": "mapping_rules_v2.4.json",
+    "generated_date": "2025-01-27",
+    "description": "온톨로지에 정의된 모든 유효한 창고 ID 목록",
+    "usage": "YAML 검증 및 RDF 변환 시 참조"
+  }
+} 

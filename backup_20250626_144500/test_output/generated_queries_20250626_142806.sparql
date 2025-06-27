@@ -1,0 +1,62 @@
+# 월별 창고별 집계
+# Query: monthly_warehouse_summary
+
+PREFIX ex: <http://samsung.com/project-logistics#>
+SELECT ?month ?warehouse (SUM(?amount) AS ?totalAmount) (SUM(?qty) AS ?totalQty)
+WHERE {
+    ?event rdf:type ex:TransportEvent ;
+           ex:hasLocation ?warehouse ;
+           ex:hasDate ?date ;
+           ex:hasAmount ?amount ;
+           ex:hasQuantity ?qty .
+    BIND(SUBSTR(STR(?date), 1, 7) AS ?month)
+}
+GROUP BY ?month ?warehouse
+ORDER BY ?month ?warehouse
+
+
+# 벤더별 분석
+# Query: vendor_analysis
+
+PREFIX ex: <http://samsung.com/project-logistics#>
+SELECT ?vendor (SUM(?amount) AS ?totalAmount) (COUNT(?event) AS ?eventCount)
+WHERE {
+    ?event rdf:type ex:TransportEvent ;
+           ex:hasVendor ?vendor ;
+           ex:hasAmount ?amount .
+}
+GROUP BY ?vendor
+ORDER BY DESC(?totalAmount)
+
+
+# 컨테이너 요약
+# Query: container_summary
+
+PREFIX ex: <http://samsung.com/project-logistics#>
+SELECT ?warehouse (SUM(?container20) AS ?total20FT) (SUM(?container40) AS ?total40FT)
+WHERE {
+    ?event rdf:type ex:TransportEvent ;
+           ex:hasLocation ?warehouse ;
+           ex:has20FTContainer ?container20 ;
+           ex:has40FTContainer ?container40 .
+}
+GROUP BY ?warehouse
+ORDER BY ?warehouse
+
+
+# 월별 창고별 Handling Fee 집계
+# Query: handling_fee_monthly_warehouse
+
+PREFIX ex: <http://samsung.com/project-logistics#>
+SELECT ?month ?warehouse (SUM(?handlingFee) AS ?totalHandlingFee)
+WHERE {
+    ?event rdf:type ex:TransportEvent ;
+           ex:hasLocation ?warehouse ;
+           ex:hasDate ?date ;
+           ex:hasHandlingFee ?handlingFee .
+    BIND(SUBSTR(STR(?date), 1, 7) AS ?month)
+}
+GROUP BY ?month ?warehouse
+ORDER BY ?month ?warehouse
+
+

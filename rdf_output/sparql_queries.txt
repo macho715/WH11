@@ -1,0 +1,38 @@
+# HVDC Warehouse SPARQL Queries
+# Generated: 2025-06-26T11:36:03.132622
+
+# latest_stock: 최신 재고 조회
+
+PREFIX hvdc: <http://samsung.com/project-logistics#>
+SELECT ?warehouse ?stock ?date
+WHERE {
+    ?snapshot a hvdc:StockSnapshot ;
+              hvdc:hasLocation ?warehouse ;
+              hvdc:hasQuantity ?stock ;
+              hvdc:hasDate ?date .
+    {
+        SELECT ?warehouse (MAX(?date) AS ?maxDate)
+        WHERE {
+            ?s hvdc:hasLocation ?warehouse ;
+               hvdc:hasDate ?date .
+        }
+        GROUP BY ?warehouse
+    }
+    FILTER(?date = ?maxDate)
+}
+ORDER BY DESC(?stock)
+
+==================================================
+
+# warehouse_by_type: Storage Type별 창고 조회
+
+PREFIX hvdc: <http://samsung.com/project-logistics#>
+SELECT ?warehouse ?storageType
+WHERE {
+    ?warehouse a ?warehouseType ;
+               hvdc:hasStorageType ?storageType .
+}
+ORDER BY ?storageType ?warehouse
+
+==================================================
+

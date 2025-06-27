@@ -1,0 +1,36 @@
+repos:
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.32.0
+    hooks:
+      - id: yamllint
+        files: \.ya?ml$
+
+  - repo: local
+    hooks:
+      - id: yaml-ontology-validate
+        name: YAML 온톨로지 정합성 자동 검증
+        entry: python tools/validate_yaml_ontology.py
+        language: system
+        files: expected_stock\.ya?ml$
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: debug-statements
+
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        args: [--max-line-length=88, --extend-ignore=E203,W503] 

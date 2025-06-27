@@ -1,0 +1,76 @@
+# HVDC 창고 기대 재고 설정
+# 온톨로지 및 매핑 규칙과 정확히 일치하는 창고 ID 사용
+# Tolerance 우선순위: ① 창고별 → ② default → ③ tolerance_pct
+
+base_currency: AED
+tolerance_pct: 1.5
+
+expected:
+  "2025-06-24":
+    "DSV Indoor": 413
+    "DSV Al Markaz": 813
+    "DSV Outdoor": 1300
+    "DSV MZP": 0
+    "MOSB": 0
+    "AGI": 0
+    "DAS": 0
+    "MIR": 0
+    "SHU": 0
+    "Hauler Indoor": 0
+    "AAA Storage": 0
+    "Dangerous Storage": 0
+  "2025-06-25":
+    "DSV Indoor": 410
+    "DSV Al Markaz": 820
+    "DSV Outdoor": 1300
+    "DSV MZP": 0
+    "MOSB": 0
+    "AGI": 0
+    "DAS": 0
+    "MIR": 0
+    "SHU": 0
+    "Hauler Indoor": 0
+    "AAA Storage": 0
+    "Dangerous Storage": 0
+  "2025-07-01":
+    "DSV Indoor": 415
+    "DSV Al Markaz": 825
+    "DSV Outdoor": 1300
+    "DSV MZP": 0
+    "MOSB": 0
+    "AGI": 0
+    "DAS": 0
+    "MIR": 0
+    "SHU": 0
+    "Hauler Indoor": 0
+    "AAA Storage": 0
+    "Dangerous Storage": 0
+  "2025-06-20":
+    "DSV Indoor": 410
+    "DSV Al Markaz": 820
+    "DSV Outdoor": 1300
+    "DSV MZP": 0
+    "MOSB": 0
+    "AGI": 0
+    "DAS": 0
+    "MIR": 0
+    "SHU": 0
+    "Hauler Indoor": 0
+    "AAA Storage": 0
+    "Dangerous Storage": 0
+
+# 오차 허용 범위 설정 (창고별 우선순위)
+tolerance:
+  default: 2
+  "DSV Indoor": 1
+  "DSV Al Markaz": 2
+  "DSV Outdoor": 3
+  "DSV MZP": 2
+  "MOSB": 2
+  "AGI": 5
+  "DAS": 5
+  "MIR": 5
+  "SHU": 5
+  "Hauler Indoor": 2
+  "AAA Storage": 1
+  "Dangerous Storage": 1 

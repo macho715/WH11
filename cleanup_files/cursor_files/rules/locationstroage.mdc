@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+-  "트랜잭션의 Location" 기준 Storage_Type 재계산
+- 원칙
+트랜잭션 한 건마다, 해당 warehouse/location의 Storage_Type을 새로 매핑
+(컬럼이나 row의 Storage_Type을 가져오는 게 아니라,
+date_col에서 추출한 실제 location(warehouse)에 대해 매핑 수행)You can @ files here
+- You can use markdown but dont have to

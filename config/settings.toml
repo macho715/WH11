@@ -1,0 +1,83 @@
+# HVDC 창고 분석 시스템 설정 파일
+# 설정 변경 시 프로그램 재시작 필요
+
+[validation]
+# 검증 모드: "strict" | "reference" | "none"
+mode = "reference"
+
+# 참조 값이 없을 때 동작: "skip" | "warn" | "error"
+missing_reference_action = "warn"
+
+# 검증 허용 오차 (박스 단위)
+tolerance = 1.0
+
+# 검증 통과율 기준 (%)
+pass_rate_threshold = 95.0
+
+[warehouses]
+# 창고별 기대 재고값 (박스 단위)
+# 값이 없으면 "참조 값 없음" 모드로 동작
+expected_stock = {
+    "DSV Al Markaz" = 812,
+    "DSV Indoor" = 414,
+    # 추가 창고는 필요시 설정
+}
+
+[data_processing]
+# 수량 처리 정책
+quantity_policy = {
+    # NaN 값을 0으로 처리할지 여부
+    fill_na_with_zero = true,
+    
+    # 최소 유효 단위 (박스 개수)
+    minimum_unit = 1,
+    
+    # 최대 허용 수량 (이상치 탐지용)
+    maximum_unit = 10000
+}
+
+[deduplication]
+# 중복 제거 설정
+time_window_minutes = 5
+quantity_tolerance = 0.1
+enable_deduplication = true
+
+# 내부 이동 처리 (Shifting 등)
+internal_transfer_handling = {
+    # 내부 이동을 한 번만 차감
+    single_deduction = true,
+    
+    # 내부 이동 창고 목록
+    internal_warehouses = ["Shifting", "Internal Transfer"]
+}
+
+[logging]
+# 로그 레벨: DEBUG, INFO, WARNING, ERROR
+level = "INFO"
+
+# 데이터 손실 탐지 로그 활성화
+enable_data_loss_logging = true
+
+# 중복 탐지 로그 활성화
+enable_duplicate_logging = true
+
+[performance]
+# 성능 최적화 설정
+use_vectorized_operations = true
+enable_groupby_optimization = true
+batch_size = 1000
+
+[paths]
+# 데이터 파일 경로
+data_directory = "data"
+mapping_rules_file = "mapping_rules_v2.4.json"
+output_directory = "reports"
+
+# 파일 패턴
+warehouse_file_patterns = [
+    "HVDC WAREHOUSE_HITACHI*.xlsx",
+    "HVDC WAREHOUSE_SIMENSE*.xlsx"
+]
+
+# 제외할 파일 패턴
+exclude_patterns = ["*invoice*", "*~$*"] 

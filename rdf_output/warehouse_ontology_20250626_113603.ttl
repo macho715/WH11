@@ -1,0 +1,165 @@
+# HVDC Warehouse Ontology RDF/OWL
+# Generated: 2025-06-26T11:36:03.123564
+# Source: mapping_rules_v2.4.json + expected_stock.yml
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix hvdc: <http://samsung.com/project-logistics#> .
+
+# Ontology Declaration
+hvdc: a owl:Ontology ;
+    rdfs:label "HVDC Warehouse Management Ontology" ;
+    rdfs:comment "Ontology for HVDC warehouse and inventory management" ;
+    owl:versionInfo "2.4" .
+
+# Class Definitions
+hvdc:TransportEvent a owl:Class ;
+    rdfs:label "TransportEvent" .
+
+hvdc:StockSnapshot a owl:Class ;
+    rdfs:label "StockSnapshot" .
+
+hvdc:Warehouse a owl:Class ;
+    rdfs:label "Warehouse" .
+
+hvdc:IndoorWarehouse a owl:Class ;
+    rdfs:label "IndoorWarehouse" .
+
+hvdc:OutdoorWarehouse a owl:Class ;
+    rdfs:label "OutdoorWarehouse" .
+
+hvdc:DangerousCargoWarehouse a owl:Class ;
+    rdfs:label "DangerousCargoWarehouse" .
+
+hvdc:Site a owl:Class ;
+    rdfs:label "Site" .
+
+hvdc:Case a owl:Class ;
+    rdfs:label "Case" .
+
+# Property Definitions
+hvdc:hasCase a owl:DatatypeProperty ;
+    rdfs:label "Case_No" ;
+    rdfs:range xsd:string .
+
+hvdc:hasDate a owl:DatatypeProperty ;
+    rdfs:label "Date" ;
+    rdfs:range xsd:dateTime .
+
+hvdc:hasQuantity a owl:DatatypeProperty ;
+    rdfs:label "Qty" ;
+    rdfs:range xsd:integer .
+
+hvdc:hasLocation a owl:DatatypeProperty ;
+    rdfs:label "Location" ;
+    rdfs:range xsd:string .
+
+hvdc:hasTransactionType a owl:DatatypeProperty ;
+    rdfs:label "TxType_Refined" ;
+    rdfs:range xsd:string .
+
+hvdc:hasCurrentStatus a owl:DatatypeProperty ;
+    rdfs:label "Status_Current" ;
+    rdfs:range xsd:string .
+
+hvdc:hasStorageType a owl:DatatypeProperty ;
+    rdfs:label "Status_Storage" ;
+    rdfs:range xsd:string .
+
+# Warehouse Instances
+hvdc:DSV_Indoor a hvdc:IndoorWarehouse ;
+    rdfs:label "DSV Indoor" ;
+    hvdc:hasStorageType "Indoor" .
+
+hvdc:DSV_Al_Markaz a hvdc:IndoorWarehouse ;
+    rdfs:label "DSV Al Markaz" ;
+    hvdc:hasStorageType "Indoor" .
+
+hvdc:Hauler_Indoor a hvdc:IndoorWarehouse ;
+    rdfs:label "Hauler Indoor" ;
+    hvdc:hasStorageType "Indoor" .
+
+hvdc:DSV_Outdoor a hvdc:OutdoorWarehouse ;
+    rdfs:label "DSV Outdoor" ;
+    hvdc:hasStorageType "Outdoor" .
+
+hvdc:DSV_MZP a hvdc:OutdoorWarehouse ;
+    rdfs:label "DSV MZP" ;
+    hvdc:hasStorageType "Outdoor" .
+
+hvdc:MOSB a hvdc:OutdoorWarehouse ;
+    rdfs:label "MOSB" ;
+    hvdc:hasStorageType "Outdoor" .
+
+hvdc:AGI a hvdc:Site ;
+    rdfs:label "AGI" ;
+    hvdc:hasStorageType "Site" .
+
+hvdc:DAS a hvdc:Site ;
+    rdfs:label "DAS" ;
+    hvdc:hasStorageType "Site" .
+
+hvdc:MIR a hvdc:Site ;
+    rdfs:label "MIR" ;
+    hvdc:hasStorageType "Site" .
+
+hvdc:SHU a hvdc:Site ;
+    rdfs:label "SHU" ;
+    hvdc:hasStorageType "Site" .
+
+hvdc:AAA_Storage a hvdc:DangerousCargoWarehouse ;
+    rdfs:label "AAA Storage" ;
+    hvdc:hasStorageType "dangerous_cargo" .
+
+hvdc:Dangerous_Storage a hvdc:DangerousCargoWarehouse ;
+    rdfs:label "Dangerous Storage" ;
+    hvdc:hasStorageType "dangerous_cargo" .
+
+# Expected Stock Data
+hvdc:ExpectedStock_2025-06-24_DSV_Indoor a hvdc:StockSnapshot ;
+    hvdc:hasDate "2025-06-24"^^xsd:date ;
+    hvdc:hasLocation hvdc:DSV_Indoor ;
+    hvdc:hasQuantity 413^^xsd:integer .
+
+hvdc:ExpectedStock_2025-06-24_DSV_Al_Markaz a hvdc:StockSnapshot ;
+    hvdc:hasDate "2025-06-24"^^xsd:date ;
+    hvdc:hasLocation hvdc:DSV_Al_Markaz ;
+    hvdc:hasQuantity 813^^xsd:integer .
+
+hvdc:ExpectedStock_2025-06-24_DSV_Outdoor a hvdc:StockSnapshot ;
+    hvdc:hasDate "2025-06-24"^^xsd:date ;
+    hvdc:hasLocation hvdc:DSV_Outdoor ;
+    hvdc:hasQuantity 1300^^xsd:integer .
+
+hvdc:ExpectedStock_2025-06-25_DSV_Indoor a hvdc:StockSnapshot ;
+    hvdc:hasDate "2025-06-25"^^xsd:date ;
+    hvdc:hasLocation hvdc:DSV_Indoor ;
+    hvdc:hasQuantity 410^^xsd:integer .
+
+hvdc:ExpectedStock_2025-06-25_DSV_Al_Markaz a hvdc:StockSnapshot ;
+    hvdc:hasDate "2025-06-25"^^xsd:date ;
+    hvdc:hasLocation hvdc:DSV_Al_Markaz ;
+    hvdc:hasQuantity 820^^xsd:integer .
+
+hvdc:ExpectedStock_2025-06-25_DSV_Outdoor a hvdc:StockSnapshot ;
+    hvdc:hasDate "2025-06-25"^^xsd:date ;
+    hvdc:hasLocation hvdc:DSV_Outdoor ;
+    hvdc:hasQuantity 1300^^xsd:integer .
+
+hvdc:ExpectedStock_2025-07-01_DSV_Indoor a hvdc:StockSnapshot ;
+    hvdc:hasDate "2025-07-01"^^xsd:date ;
+    hvdc:hasLocation hvdc:DSV_Indoor ;
+    hvdc:hasQuantity 415^^xsd:integer .
+
+hvdc:ExpectedStock_2025-07-01_DSV_Al_Markaz a hvdc:StockSnapshot ;
+    hvdc:hasDate "2025-07-01"^^xsd:date ;
+    hvdc:hasLocation hvdc:DSV_Al_Markaz ;
+    hvdc:hasQuantity 825^^xsd:integer .
+
+hvdc:ExpectedStock_2025-07-01_DSV_Outdoor a hvdc:StockSnapshot ;
+    hvdc:hasDate "2025-07-01"^^xsd:date ;
+    hvdc:hasLocation hvdc:DSV_Outdoor ;
+    hvdc:hasQuantity 1300^^xsd:integer .
+
